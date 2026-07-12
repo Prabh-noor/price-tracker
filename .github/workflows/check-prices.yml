@@ -1,0 +1,26 @@
+name: Check Bookmarked Prices
+
+on:
+  schedule:
+    # 9:00 AM and 9:00 PM IST = 3:30 and 15:30 UTC. Adjust as you like.
+    - cron: "30 3 * * *"
+    - cron: "30 15 * * *"
+  workflow_dispatch: {}  # lets you trigger a check manually from the Actions tab
+
+jobs:
+  check-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r cron/requirements.txt
+
+      - name: Run price check
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: python cron/check_prices.py

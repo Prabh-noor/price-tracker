@@ -1,0 +1,8 @@
+[
+  { "site": "amazon", "label": "Amazon", "domain": "amazon.in" },
+  { "site": "flipkart", "label": "Flipkart", "domain": "flipkart.com" },
+  { "site": "nykaa", "label": "Nykaa", "domain": "nykaa.com" },
+  { "site": "myntra", "label": "Myntra", "domain": "myntra.com" },
+  { "site": "ajio", "label": "Ajio", "domain": "ajio.com" },
+  { "site": "meesho", "label": "Meesho", "domain": "meesho.com" }
+]
