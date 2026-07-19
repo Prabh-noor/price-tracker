@@ -19,7 +19,8 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
 import requests
-
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
 import pricelib
 
 DOMAINS_FILE = Path(__file__).parent / "domains.json"
