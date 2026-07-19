@@ -40,9 +40,19 @@ function isIOS() {
 }
 
 // ---------- auth ----------
-loginBtn.addEventListener("click", () => {
+// loginBtn.addEventListener("click", () => {
+//   const provider = new firebase.auth.GoogleAuthProvider();
+//   auth.signInWithRedirect(provider);
+// });
+
+loginBtn.addEventListener("click", async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithRedirect(provider);
+  try {
+    const result = await auth.signInWithPopup(provider);
+    console.log("Signed in:", result.user.email);
+  } catch (e) {
+    console.error("Sign-in failed:", e.code, e.message);
+  }
 });
 
 logoutBtn.addEventListener("click", async () => {

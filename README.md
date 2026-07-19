@@ -51,8 +51,8 @@ firebase deploy --only firestore:rules
 
 ## 3. Set up Google Custom Search (for the live search feature)
 
-1. Go to [programmablesearchengine.google.com](https://programmablesearchengine.google.com/) → **Add** → turn on **"Search the entire web"** → create it. Note the **Search engine ID** (this is your `cx`).
-2. Go to [console.cloud.google.com](https://console.cloud.google.com) → select the same Google account/project → **APIs & Services → Library** → search "Custom Search API" → **Enable**.
+1. Go to [programmablesearchengine.google.com](https://programmablesearchengine.google.com/) → Creat a new search engine. Add the domain you want the app to search. Note the **Search engine ID** (this is your `cx`).
+2. **Enable Custom Search Api for Firebase project**: Go to [console.cloud.google.com](https://console.cloud.google.com) → search the same Firebase project name inside projects → **APIs & Services → Library** → search "Custom Search API" → **Enable**.
 3. **APIs & Services → Credentials → Create credentials → API key** → copy it.
    - Free quota: **100 searches/day**. Each search you run in the app uses exactly 1 query, no matter how many sites are in `domains.json` (they're all combined into one request).
 4. Edit `api/domains.json` to list exactly the sites you want compared — this is the enumeration file you mentioned wanting to control yourself. Format:
@@ -63,12 +63,20 @@ firebase deploy --only firestore:rules
 ## 4. Deploy to Vercel (frontend + search API)
 
 1. Push this project to a GitHub repo.
-2. Go to [vercel.com](https://vercel.com) → sign up free (GitHub login) → **Add New → Project** → import your repo → deploy (no config needed, it auto-detects the static files and `/api` function).
-3. Once deployed, go to your Vercel project → **Settings → Environment Variables** and add:
+2. Go to [vercel.com](https://vercel.com) → sign up free (GitHub login) → **Add New → Project** → import your repo → deploy (select Other as framework preset, add `GOOGLE_API_KEY` & `GOOGLE_CSE_ID` as environment variable, on deploy it auto-detects the static files and `/api/search` as python serverless function).
+   **Environment Variables**:
    - `GOOGLE_API_KEY` = the API key from step 3.3
    - `GOOGLE_CSE_ID` = the search engine ID (`cx`) from step 3.1
-4. Redeploy (Vercel → Deployments → ⋯ → Redeploy) so the function picks up the new env vars.
-5. Your app is now live at `https://your-project.vercel.app`.
+3. Your app is now live at `https://your-project.vercel.app`.
+
+## Allow Vercel domain to use your Firebase's Google Sign In
+1. Open Firebase Console.
+2. Select your project.
+3. Go to: Authentication → Settings → Authorized domains
+4. Click Add domain.
+5. Add your Vercel domain, for example: price-tracker-abc123.vercel.app
+Note: Do not include: https://, / or any path
+Just the hostname.
 
 ## 5. Set up the twice-daily price check (GitHub Actions)
 
